@@ -3,7 +3,7 @@ const { exec, spawn } = require('child_process');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
-const PORT = 11434;
+const PORT = 8080;
 
 // Check if Ollama is installed, and install if not
 function checkAndInstallOllama() {
@@ -12,7 +12,7 @@ function checkAndInstallOllama() {
       if (error || !stdout.trim()) {
         console.log("Ollama not found. Downloading and installing for Linux...");
         // Replace the URL and installation command below with the actual install script/command for Ollama
-        exec('curl -L https://ollama.example.com/install.sh | bash', (installErr, installOut, installErrOut) => {
+        exec('curl -fsSL https://ollama.com/install.sh | sh', (installErr, installOut, installErrOut) => {
           if (installErr) {
             console.error("Installation failed:", installErrOut);
             return reject(installErr);
@@ -53,15 +53,12 @@ function setupProxy() {
   // Here, we assume deepseek exposes an API on a certain port or endpoint
   // Adjust target URL as needed (e.g., if deepseek runs on localhost:PORT_DEEPSEEK)
   const proxyOptions = {
-    target: 'http://localhost:YOUR_DEEPSEEK_PORT',
-    changeOrigin: true,
-    pathRewrite: {
-      '^/api': '', // Remove /api prefix if necessary
-    },
+    target: 'http://localhost:11434',
+    changeOrigin: true
   };
 
   // Proxy all calls under /api to the deepseek service
-  app.use('/api', createProxyMiddleware(proxyOptions));
+  app.use((req, res) => createProxyMiddleware(proxyOptions));
 
   app.listen(PORT, () => {
     console.log(`Proxy server listening on port ${PORT}`);
