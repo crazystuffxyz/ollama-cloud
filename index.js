@@ -12,14 +12,16 @@ function checkAndInstallOllama() {
       if (error || !stdout.trim()) {
         console.log("Ollama not found. Downloading and installing for Linux...");
         // Replace the URL and installation command below with the actual install script/command for Ollama
-        exec('curl -fsSL https://ollama.com/install.sh | sh', (installErr, installOut, installErrOut) => {
-          if (installErr) {
-            console.error("Installation failed:", installErrOut);
-            return reject(installErr);
-          }
-          console.log("Ollama installed successfully.");
-          resolve();
-        });
+exec('curl -fsSL https://ollama.com/install.sh | sh', (installErr, installOut, installErrOut) => {
+  if (installErr) {
+    console.error("Installation failed. Stdout:", installOut);
+    console.error("Installation failed. Stderr:", installErrOut);
+    return reject(installErr);
+  }
+  console.log("Ollama installed successfully.");
+  resolve();
+});
+
       } else {
         console.log("Ollama is already installed.");
         resolve();
