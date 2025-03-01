@@ -70,8 +70,6 @@ function setupProxy() {
 // Main initialization function
 async function initService() {
   try {
-    await checkAndInstallOllama();
-    // Start deepseek – you might want to wait for it to be fully up before proxying
     startDeepseek();
     // If deepseek needs time to initialize, you might add a delay or readiness check here.
     // For example, wait a few seconds or poll an endpoint.
