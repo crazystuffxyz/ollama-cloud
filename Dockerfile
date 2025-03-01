@@ -23,7 +23,7 @@ RUN yarn install
 COPY . .
 
 # Expose the port that your Express app listens on (adjust if needed)
-EXPOSE 11434
+EXPOSE 8080
 
 # Command to run your Node.js application
 CMD ["node", "index.js"]
