@@ -12,7 +12,7 @@ function checkAndInstallOllama() {
       if (error || !stdout.trim()) {
         console.log("Ollama not found. Downloading and installing for Linux...");
         // Replace the URL and installation command below with the actual install script/command for Ollama
-exec('curl -fsSL https://ollama.com/install.sh | sh', (installErr, installOut, installErrOut) => {
+exec('docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama', (installErr, installOut, installErrOut) => {
   if (installErr) {
     console.error("Installation failed. Stdout:", installOut);
     console.error("Installation failed. Stderr:", installErrOut);
@@ -69,6 +69,7 @@ function setupProxy() {
 
 // Main initialization function
 async function initService() {
+  await checkAndInstallOllama();
   try {
     startDeepseek();
     // If deepseek needs time to initialize, you might add a delay or readiness check here.
