@@ -12,7 +12,7 @@ function checkAndInstallOllama() {
       if (error || !stdout.trim()) {
         console.log("Ollama not found. Downloading and installing for Linux...");
         // Replace the URL and installation command below with the actual install script/command for Ollama
-exec('docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama', (installErr, installOut, installErrOut) => {
+exec('curl -L https://ollama.com/download/ollama-linux-amd64.tgz -o ollama-linux-amd64.tgz && tar -C /usr -xzf ollama-linux-amd64.tgz && ollama serve', (installErr, installOut, installErrOut) => {
   if (installErr) {
     console.error("Installation failed. Stdout:", installOut);
     console.error("Installation failed. Stderr:", installErrOut);
